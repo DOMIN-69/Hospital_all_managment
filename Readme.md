@@ -46,7 +46,10 @@ Designed for clinics, hospitals, and healthcare organizations that need a simple
 - 🌐 Easy VPS/cPanel Deployment
 
 ---
-# 📥 Clone the Repository
+
+# Specially for those who use linux on phone 
+
+### 📥 Clone the Repository
 
 If you want to download this project using Git, run:
 
@@ -58,7 +61,7 @@ git clone https://github.com/DOMIN-69/Hospital_all_managment.git
 Move into the project directory:
 
 ```bash
-cd Management
+cd Hospital_all_management
 ```
 
 Install the required dependencies:
@@ -66,24 +69,43 @@ Install the required dependencies:
 ```bash
 pip install -r requirements.txt
 ```
+# 📱 Running on Android (Termux)
 
-Then continue with the Database Setup section below. 
-# 🚀 Local Development Setup
+This project can also be tested directly on Android using **Termux**.
 
-## 📦 Download Without Git
+---
 
-If you don't have Git installed:
+## 1. Update Packages
 
-1. Click the **Code** button on the repository.
-2. Select **Download ZIP**.
-3. Extract the ZIP file.
-4. Open the project folder.
-5. Continue from the installation steps below.
+```bash
+pkg update && pkg upgrade -y
+```
 
+---
 
-## 1. Install Dependencies
+## 2. Install Required Packages
 
-Open Terminal/CMD inside the project folder and run:
+```bash
+pkg install python git mariadb clang make pkg-config -y
+```
+
+---
+
+## 3. Clone the Repository
+
+```bash
+git clone https://github.com/DOMIN-69/Hospital_all_managment.git
+```
+
+Move into the project directory:
+
+```bash
+cd Hospital_all_managment
+```
+
+---
+
+## 4. Install Python Dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -91,10 +113,201 @@ pip install -r requirements.txt
 
 ---
 
-## 2. Database Setup
+## 5. Initialize MariaDB (First Time Only)
 
-- Open **XAMPP** or **MySQL Workbench**
-- Create a database
+```bash
+mariadb-install-db
+```
+
+---
+
+## 6. Start MariaDB Server
+
+```bash
+mariadbd-safe &
+```
+
+If the above command is unavailable, try:
+
+```bash
+mysqld_safe &
+```
+
+---
+
+## 7. Login to MariaDB
+
+```bash
+mariadb -u root
+```
+
+---
+
+## 8. Create Database
+
+Inside MariaDB run:
+
+```sql
+CREATE DATABASE hospital_db;
+EXIT;
+```
+
+---
+
+## 9. Import Database Schema
+
+Make sure you are inside the project folder.
+
+```bash
+mariadb -u root hospital_db < schema.sql
+```
+
+---
+
+## 10. Verify Database
+
+```bash
+mariadb -u root hospital_db
+```
+
+Inside MariaDB:
+
+```sql
+SHOW TABLES;
+EXIT;
+```
+
+If the tables are displayed successfully, the database has been imported correctly.
+
+---
+
+## 11. Configure Database
+
+Open `config.py` and update your database credentials.
+
+Example:
+
+```python
+host = "127.0.0.1"
+user = "root"
+password = ""
+database = "hospital_db"
+port = 3306
+```
+
+If you have configured a password for your MariaDB root account, replace the empty password with your actual password.
+
+---
+
+## 12. Run the Application
+
+```bash
+python app.py
+```
+
+or
+
+```bash
+python3 app.py
+```
+
+---
+
+## 13. Open the Application
+
+Open your browser and visit:
+
+```
+http://127.0.0.1:5000
+```
+
+---
+
+# Troubleshooting
+
+### Can't connect to MySQL server
+
+```
+Error 2003
+```
+
+Make sure MariaDB server is running.
+
+Start it again:
+
+```bash
+mariadbd-safe &
+```
+
+---
+
+### Access denied for user
+
+```
+Error 1045
+```
+
+Check your database username and password inside `config.py`.
+
+---
+
+### Database not found
+
+```
+Unknown database hospital_db
+```
+
+Create the database first and import `schema.sql` again.
+
+---
+
+### Table doesn't exist
+
+Import the schema again:
+
+```bash
+mariadb -u root hospital_db < schema.sql
+```
+
+---
+
+## Notes
+
+- This project uses **MariaDB** on Termux because the official MySQL server is not available in the Termux repositories.
+- MariaDB is highly compatible with MySQL, so no changes to the project code are required.
+- For Windows or VPS deployments, you can use either MySQL or MariaDB.
+Then continue with the Database Setup section below.
+
+
+# 🚀 Local Setup (Windows, Linux & VPS)
+
+## 📥 Download Without Git
+
+If Git is not installed on your system:
+
+1. Click the **Code** button on this repository.
+2. Select **Download ZIP**.
+3. Extract the downloaded ZIP archive.
+4. Open the extracted project folder.
+5. Continue with the installation steps below.
+
+---
+
+## 1️⃣ Install Python Dependencies
+
+Open a terminal (or Command Prompt) inside the project folder and run:
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+## 2️⃣ Create the Database
+
+Open **XAMPP (phpMyAdmin)**, **MySQL Workbench**, or any MySQL/MariaDB client.
+
+Create a new database.
 
 Example:
 
@@ -102,102 +315,131 @@ Example:
 hospital_db
 ```
 
-or use any database name you prefer.
-
-Import the provided:
-
-```
-schema.sql
-```
-
-into your database.
+You may also choose any database name of your choice.
 
 ---
 
-## 3. Configure Database
+## 3️⃣ Import the Database Schema
+
+Import the provided:
+
+```text
+schema.sql
+```
+
+into the database you created.
+
+---
+
+## 4️⃣ Configure Database Credentials
 
 Open:
 
-```
+```text
 config.py
 ```
 
-Update your database credentials.
+Update the database configuration.
 
 Example:
 
 ```python
+host = "localhost"
 user = "root"
 password = ""
-host = "localhost"
 database = "hospital_db"
 ```
 
+If you are using a custom MySQL username or password, replace the above values accordingly.
+
 ---
 
-## 4. Run the Project
+## 5️⃣ Start the Application
+
+Run:
 
 ```bash
 python app.py
 ```
 
-Open your browser:
+or
 
+```bash
+python3 app.py
 ```
+
+---
+
+## 6️⃣ Open in Browser
+
+Visit:
+
+```text
 http://127.0.0.1:5000/
 ```
 
 ---
 
-# 🌍 Deploying on VPS / Web Hosting
+# 🌍 Deploying on VPS / cPanel Hosting
 
-## Step 1
+## 1️⃣ Configure Production Database
 
-Update your production database credentials inside:
+Edit `config.py` and replace the local database credentials with your hosting database credentials.
 
-```
-config.py
-```
+Example:
 
 ```python
-user = "your_live_db_username"
-password = "your_live_db_password"
 host = "localhost"
-database = "your_live_database"
+user = "your_database_username"
+password = "your_database_password"
+database = "your_database_name"
 ```
 
 ---
 
-## Step 2
+## 2️⃣ Upload Project Files
 
-Upload the complete project using:
+Upload the complete project using one of the following methods:
 
-- FTP
-- File Manager
+- FTP Client (FileZilla)
+- cPanel File Manager
 - Git Deployment
 
 ---
 
-## Step 3 (cPanel)
+## 3️⃣ Create a Python Application
+
+Log in to your **cPanel**.
 
 Open:
 
-```
+```text
 Setup Python App
 ```
 
-Create a new application.
+Create a new Python application and configure:
 
-Set:
+- **Application Root** → Project Folder
+- **Startup File** → `app.py`
+- **Python Version** → 3.x
 
-- Application Directory → Project Folder
-- Startup File → `app.py`
+---
 
-Install dependencies using:
+## 4️⃣ Install Dependencies
 
+Inside the Python App console or terminal, run:
+
+```bash
+pip install -r requirements.txt
 ```
-requirements.txt
-```
+
+---
+
+## 5️⃣ Restart the Application
+
+After the installation is complete, click **Restart** inside **Setup Python App**.
+
+Your Hospital Management System should now be live.
 
 Finally restart the application.
 
@@ -267,4 +509,4 @@ This project is provided for educational and commercial deployment purposes.
 
 # ⚠️ Notice
 
-> **This project was originally developed as a custom solution for a client. However, the final deployment was not completed because the client decided not to proceed with the project. The source code is now shared for portfolio, educational, and demonstration purposes only.**
+> **This project was originally developed as a custom solution for a client.**
