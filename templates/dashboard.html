@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container text-center mt-4">
+    <h2 class="mb-4">🏥 Hospital Management Control Center</h2>
+    
+    <div class="row mb-5">
+        <div class="col-md-4">
+            <div class="card bg-success text-white shadow">
+                <div class="card-body">
+                    <h3>📁 Total Patients</h3>
+                    <h1 class="display-4 font-weight-bold">{{ counts.patients }}</h1>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-info text-white shadow">
+                <div class="card-body">
+                    <h3>🩺 Active Doctors</h3>
+                    <h1 class="display-4 font-weight-bold">{{ counts.doctors }}</h1>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-warning text-dark shadow">
+                <div class="card-body">
+                    <h3>📅 Appointments</h3>
+                    <h1 class="display-4 font-weight-bold">{{ counts.appointments }}</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <a href="{{ url_for('patients') }}" class="btn btn-primary btn-lg w-100 py-3 shadow-sm">Manage Patients</a>
+        </div>
+        <div class="col-md-4 mb-3">
+            <a href="{{ url_for('doctors') }}" class="btn btn-primary btn-lg w-100 py-3 shadow-sm">Manage Doctors</a>
+        </div>
+        <div class="col-md-4 mb-3">
+            <a href="{{ url_for('appointments') }}" class="btn btn-primary btn-lg w-100 py-3 shadow-sm">View Appointments</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

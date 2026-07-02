@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid mt-3">
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark text-white fw-bold">
+                    ➕ Add New Patient
+                </div>
+                <div class="card-body">
+                    <form action="{{ url_for('patients') }}" method="POST">
+                        <div class="mb-2">
+                            <label class="form-label small fw-bold">Full Name</label>
+                            <input type="text" class="form-control" name="name" placeholder="Patient Full Name" required>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small fw-bold">Age</label>
+                                <input type="number" class="form-control" name="age" placeholder="Age" required>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small fw-bold">Gender</label>
+                                <select class="form-select" name="gender" required>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label small fw-bold">📞 Contact Info (Phone)</label>
+                            <input type="text" class="form-control" name="phone" placeholder="Primary Contact No." required>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label small fw-bold">🚨 Emergency Contact</label>
+                            <input type="text" class="form-control" name="emergency_contact" placeholder="Name (Relation) - Phone" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Disease / Symtoms</label>
+                            <input type="text" class="form-control" name="disease" placeholder="Diagnosis" required>
+                        </div>
+                        <button type="submit" class="btn btn-dark w-100 fw-bold">Register Patient</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 text-dark fw-bold">📁 Registered Patients Database</h5>
+                    <form action="{{ url_for('patients') }}" method="GET" class="d-flex w-50">
+                        <input type="text" name="search" class="form-control form-control-sm me-2" placeholder="Search by name or disease..." value="{{ search_query }}">
+                        <button type="submit" class="btn btn-sm btn-dark">Search</button>
+                    </form>
+                </div>
+                <div class="card-body p-0 table-responsive">
+                    <table class="table table-hover mb-0 align-middle">
+                        <thead class="table-dark small">
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Age/Gender</th>
+                                <th>📞 Contact</th>
+                                <th>🚨 Emergency Contact</th>
+                                <th>Disease</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="small">
+                            {% for p in patients %}
+                            <tr>
+                                <td>{{ p.id }}</td>
+                                <td class="fw-bold text-primary">{{ p.name }}</td>
+                                <td>{{ p.age }} Yrs / {{ p.gender }}</td>
+                                <td>{{ p.phone }}</td>
+                                <td class="text-danger fw-bold">{{ p.emergency_contact }}</td>
+                                <td><span class="badge bg-secondary">{{ p.disease }}</span></td>
+                                <td class="text-center">
+                                    <a href="{{ url_for('edit_patient', id=p.id) }}" class="btn btn-sm btn-outline-primary py-0 px-2"><i class="bi bi-pencil"></i> Edit</a>
+                                    <a href="{{ url_for('delete_item', type='patient', id=p.id) }}" class="btn btn-sm btn-outline-danger py-0 px-2" onclick="return confirm('Are you sure to delete this patient record?')"><i class="bi bi-trash"></i> Delete</a>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="7" class="text-center text-muted py-4">No records found matching criteria.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
